@@ -256,14 +256,15 @@ var MyApp = (function () {
 }());
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* Nav */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* Nav */])
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* Nav */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* Nav */]) === "function" && _a || Object)
 ], MyApp.prototype, "nav", void 0);
 MyApp = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/app.html"*/'<ion-menu [content]="content">\n  <ion-header>\n    <ion-toolbar>\n      <ion-title>Game Menu</ion-title>\n    </ion-toolbar>\n  </ion-header>\n\n  <ion-content>\n    <ion-list>\n      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">\n        {{p.title}}\n      </button>\n    </ion-list>\n  </ion-content>\n\n</ion-menu>\n\n<!-- Disable swipe-to-go-back because it\'s poor UX to combine STGB with side menus -->\n<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>'/*ion-inline-end:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/app.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Platform */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]) === "function" && _d || Object])
 ], MyApp);
 
+var _a, _b, _c, _d;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -298,7 +299,7 @@ var PhotosComponent = PhotosComponent_1 = (function () {
         this._sanitizer = _sanitizer;
         this.self = this;
         this.isfirstPhotoChosen = false;
-        PhotosComponent_1.successCount = 8;
+        PhotosComponent_1.successCount = photosService.photos_level / 2;
         this.beginGame();
     }
     PhotosComponent.prototype.flipPhotos = function (waitTime) {
@@ -329,8 +330,8 @@ var PhotosComponent = PhotosComponent_1 = (function () {
                     console.log('first photo: ', this.firstPhoto.id, 'second photo: ', photoItem.id);
                     // Two photos match
                     if (this.firstPhoto.id === photoItem.id) {
-                        PhotosComponent_1.successCount = PhotosComponent_1.successCount - 1;
                         console.log(PhotosComponent_1.successCount);
+                        PhotosComponent_1.successCount = PhotosComponent_1.successCount - 1;
                         if (PhotosComponent_1.successCount <= 0) {
                             alert("You Win");
                         }
@@ -349,7 +350,6 @@ var PhotosComponent = PhotosComponent_1 = (function () {
     };
     return PhotosComponent;
 }());
-PhotosComponent.successCount = 8;
 PhotosComponent = PhotosComponent_1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'app-photos',template:/*ion-inline-start:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/photos/photos.component.html"*/'<ion-grid>\n    <ion-row>\n      <ion-col col-6 col-md-3 col-xs-6 *ngFor="let photo of photosList" class="flip-container" ontouchstart="this.classList.toggle(\'click\');">\n        <div class="flipper flipped" #photoItem\n          [id]="photo.id"\n          (click)="choosePhoto(photoItem)">\n          <div class="photo-container back" \n          [style.background-image]="getBackground(photo.id, photo.secret, photo.farm, photo.server)"></div>\n          <div class="front"></div>\n        </div>\n      </ion-col>\n    </ion-row>\n  </ion-grid>'/*ion-inline-end:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/photos/photos.component.html"*/,

@@ -13,13 +13,13 @@ import * as $ from 'jquery'
 
 export class PhotosComponent {
   constructor(private photosService: PhotosService, private _sanitizer: DomSanitizer) { 
-    PhotosComponent.successCount = 8;
+    PhotosComponent.successCount = photosService.photos_level / 2;
     this.beginGame();
   }
 
   self = this;
   photosList: any;
-  static successCount: number = 8;
+  static successCount: number;
   isfirstPhotoChosen: boolean = false;
   firstPhoto: any;
   
@@ -34,7 +34,6 @@ export class PhotosComponent {
     this.photosService.getPhotos().subscribe(
       photosObject => { 
         this.photosList = photosObject;
-
         // Flip photos to show them for 3 seconds before hiding them again to begin the game
         this.flipPhotos(3);
       }
@@ -59,8 +58,8 @@ export class PhotosComponent {
           
           // Two photos match
           if(this.firstPhoto.id === photoItem.id) {
-            PhotosComponent.successCount = PhotosComponent.successCount-1;
             console.log(PhotosComponent.successCount);
+            PhotosComponent.successCount = PhotosComponent.successCount-1;
             if(PhotosComponent.successCount <= 0) {
               alert("You Win");
             }
