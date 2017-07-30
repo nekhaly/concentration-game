@@ -18,5 +18,5 @@ Then, to run it in web version, use this
 $ ionic serve
 ```
 
-This should run on (http://localhost:4100) by default.
+This should run on (http://localhost:8100) by default.
 
