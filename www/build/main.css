@@ -25213,7 +25213,7 @@ ion-navbar.toolbar {
 }
 
 /* flip the pane when clicked */
-.flip-container .flipper.hover {
+.flip-container .flipper.flipped {
   -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }

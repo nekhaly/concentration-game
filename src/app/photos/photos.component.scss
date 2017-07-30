@@ -10,7 +10,7 @@
 }
 
 /* flip the pane when clicked */
-.flip-container .flipper.hover {
+.flip-container .flipper.flipped {
     transform: rotateY(180deg);
 }
 

@@ -234,7 +234,7 @@ var MyApp = (function () {
         this.initializeApp();
         // used for an example of ngFor and navigation
         this.pages = [
-            { title: 'Play Game', component: __WEBPACK_IMPORTED_MODULE_4__pages_home_home__["a" /* HomePage */] },
+            { title: 'New Game', component: __WEBPACK_IMPORTED_MODULE_4__pages_home_home__["a" /* HomePage */] },
             { title: 'Settings', component: __WEBPACK_IMPORTED_MODULE_5__pages_settings_settings__["a" /* SettingsPage */] }
         ];
     }
@@ -276,6 +276,8 @@ MyApp = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__photos_service__ = __webpack_require__(264);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -288,52 +290,58 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 //import * as _ from "lodash";
 var PhotosComponent = PhotosComponent_1 = (function () {
     function PhotosComponent(photosService, _sanitizer) {
         this.photosService = photosService;
         this._sanitizer = _sanitizer;
         this.self = this;
-        this.photosList = this.photosService.getPhotos();
         this.isfirstPhotoChosen = false;
         PhotosComponent_1.successCount = 8;
         this.beginGame();
     }
-    //photosListCopy = _.clone(this.photosList);
-    PhotosComponent.prototype.flipPhotos = function () {
-        console.log('Photos Are Flipped');
+    PhotosComponent.prototype.flipPhotos = function (waitTime) {
+        setTimeout(function () {
+            __WEBPACK_IMPORTED_MODULE_3_jquery__(".flipper").removeClass('flipped');
+        }, waitTime * 1000);
     };
     PhotosComponent.prototype.beginGame = function () {
         var _this = this;
-        setTimeout(function () {
-            _this.flipPhotos();
-        }, 5000);
+        // Get photos from API
+        this.photosService.getPhotos().subscribe(function (photosObject) {
+            _this.photosList = photosObject;
+            // Flip photos to show them for 3 seconds before hiding them again to begin the game
+            _this.flipPhotos(3);
+        });
     };
     PhotosComponent.prototype.choosePhoto = function (photoItem) {
-        photoItem.className += " hover";
-        setTimeout(function () {
-            // Choose First Photo 
-            if (!this.isfirstPhotoChosen) {
-                this.isfirstPhotoChosen = true;
-                this.firstPhoto = photoItem;
-            }
-            else {
-                this.isfirstPhotoChosen = false;
-                console.log('first photo: ', this.firstPhoto.id, 'second photo: ', photoItem.id);
-                // Two photos match
-                if (this.firstPhoto.id === photoItem.id) {
-                    PhotosComponent_1.successCount = PhotosComponent_1.successCount - 1;
-                    console.log(PhotosComponent_1.successCount);
-                    if (PhotosComponent_1.successCount <= 0) {
-                        alert("You Win");
-                    }
+        if (photoItem.className != "flipper flipped") {
+            photoItem.className = "flipper flipped";
+            setTimeout(function () {
+                // Choose First Photo 
+                if (!this.isfirstPhotoChosen) {
+                    this.isfirstPhotoChosen = true;
+                    this.firstPhoto = photoItem;
                 }
                 else {
-                    this.firstPhoto.className = "flipper";
-                    photoItem.className = "flipper";
+                    this.isfirstPhotoChosen = false;
+                    console.log('first photo: ', this.firstPhoto.id, 'second photo: ', photoItem.id);
+                    // Two photos match
+                    if (this.firstPhoto.id === photoItem.id) {
+                        PhotosComponent_1.successCount = PhotosComponent_1.successCount - 1;
+                        console.log(PhotosComponent_1.successCount);
+                        if (PhotosComponent_1.successCount <= 0) {
+                            alert("You Win");
+                        }
+                    }
+                    else {
+                        this.firstPhoto.className = "flipper";
+                        photoItem.className = "flipper";
+                    }
                 }
-            }
-        }, 1000);
+            }, 700);
+        }
     };
     PhotosComponent.prototype.getBackground = function (id, secret, farm, server) {
         var image = 'https://farm' + farm + '.staticflickr.com/' + server + '/' + id + '_' + secret + '.jpg';
@@ -344,13 +352,13 @@ var PhotosComponent = PhotosComponent_1 = (function () {
 PhotosComponent.successCount = 8;
 PhotosComponent = PhotosComponent_1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'app-photos',template:/*ion-inline-start:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/photos/photos.component.html"*/'<ion-grid>\n    <ion-row>\n      <ion-col col-6 col-md-3 col-xs-6 *ngFor="let photo of photosList | async" class="flip-container" ontouchstart="this.classList.toggle(\'click\');">\n        <div class="flipper" #photoItem\n          [id]="photo.id"\n          (click)="choosePhoto(photoItem)">\n          <div class="photo-container back" \n          [style.background-image]="getBackground(photo.id, photo.secret, photo.farm, photo.server)"></div>\n          <div class="front"></div>\n        </div>\n      </ion-col>\n    </ion-row>\n  </ion-grid>'/*ion-inline-end:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/photos/photos.component.html"*/,
+        selector: 'app-photos',template:/*ion-inline-start:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/photos/photos.component.html"*/'<ion-grid>\n    <ion-row>\n      <ion-col col-6 col-md-3 col-xs-6 *ngFor="let photo of photosList" class="flip-container" ontouchstart="this.classList.toggle(\'click\');">\n        <div class="flipper flipped" #photoItem\n          [id]="photo.id"\n          (click)="choosePhoto(photoItem)">\n          <div class="photo-container back" \n          [style.background-image]="getBackground(photo.id, photo.secret, photo.farm, photo.server)"></div>\n          <div class="front"></div>\n        </div>\n      </ion-col>\n    </ion-row>\n  </ion-grid>'/*ion-inline-end:"/Users/nekhaly/personal/assignments/TheMobile/concentration-game/src/app/photos/photos.component.html"*/,
         providers: [__WEBPACK_IMPORTED_MODULE_1__photos_service__["a" /* PhotosService */]]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__photos_service__["a" /* PhotosService */], __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__photos_service__["a" /* PhotosService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__photos_service__["a" /* PhotosService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _b || Object])
 ], PhotosComponent);
 
-var PhotosComponent_1;
+var PhotosComponent_1, _a, _b;
 //# sourceMappingURL=photos.component.js.map
 
 /***/ }),
