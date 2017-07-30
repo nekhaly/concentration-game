@@ -1,0 +1,13 @@
+<ion-grid>
+    <ion-row>
+      <ion-col col-6 col-md-3 col-xs-6 *ngFor="let photo of photosList | async" class="flip-container" ontouchstart="this.classList.toggle('click');">
+        <div class="flipper" #photoItem
+          [id]="photo.id"
+          (click)="choosePhoto(photoItem)">
+          <div class="photo-container back" 
+          [style.background-image]="getBackground(photo.id, photo.secret, photo.farm, photo.server)"></div>
+          <div class="front"></div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
